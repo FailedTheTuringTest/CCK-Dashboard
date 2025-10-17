@@ -1,0 +1,141 @@
+body {
+    background-image: url('https://images.unsplash.com/photo-1554141323-c35b7b3469d4'); /* <-- CHANGE YOUR BACKGROUND IMAGE URL HERE */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.card {
+    /* Frosted glass effect */
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    margin-top: 0;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* Time Card */
+.card-time {
+    grid-column: 1 / -1; /* Make time span full width on larger screens */
+    text-align: center;
+    font-weight: 300;
+}
+
+#time {
+    font-size: 5rem;
+    font-weight: 700;
+}
+
+#date {
+    font-size: 1.5rem;
+}
+
+/* Weather Card */
+.weather-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+}
+.weather-item span {
+    font-weight: 700;
+}
+
+/* Stock Card */
+.stock-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.stock-item:last-child {
+    border-bottom: none;
+}
+.stock-price {
+    font-weight: 700;
+}
+.stock-change-positive {
+    color: #4caf50; /* Green */
+}
+.stock-change-negative {
+    color: #f44336; /* Red */
+}
+
+/* News Card */
+#news-info {
+    max-height: 250px;
+    overflow-y: auto;
+}
+.news-item {
+    margin-bottom: 15px;
+}
+.news-item a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.news-item a:hover {
+    text-decoration: underline;
+}
+.news-item p {
+    font-size: 0.9rem;
+    margin: 5px 0 0 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Scrollbar styling for News */
+#news-info::-webkit-scrollbar {
+    width: 8px;
+}
+#news-info::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+#news-info::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    #time {
+        font-size: 3rem;
+    }
+    #date {
+        font-size: 1.2rem;
+    }
+    body {
+        padding: 10px;
+    }
+    .grid-container {
+        gap: 10px;
+    }
+}
