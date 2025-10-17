@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // --- CONFIGURATION ---
     const FMP_API_KEY = 'KLmIuCOPF2f04KtK7z1JFVu9HfVN3Pkn'; // <-- PASTE YOUR FREE API KEY HERE
-    const stockSymbols = ['AAPL']; // Apple, Google, Microsoft, CRH (Irish)
+    const stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'CRH.L']; // Apple, Google, Microsoft, CRH (Irish)
     
     // --- 1. CLOCK AND DATE ---
     function updateTime() {
