@@ -48,10 +48,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => fetchWeather(position.coords.latitude, position.coords.longitude, 'Your Location'),
-                () => fetchWeather(51.8985, -8.4756, 'Cork')
+                // UPDATED: Fallback location is now Westmeath
+                () => fetchWeather(53.5267, -7.3421, 'Westmeath')
             );
         } else {
-            fetchWeather(51.8985, -8.4756, 'Cork');
+            // UPDATED: Fallback location is now Westmeath
+            fetchWeather(53.5267, -7.3421, 'Westmeath');
         }
     }
 
@@ -92,8 +94,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         
         try {
-            // Alpha Vantage free tier requires fetching each stock one by one.
-            // We use Promise.all to run all requests in parallel for speed.
             const requests = stockSymbols.map(symbol => {
                 const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
                 return fetch(url).then(response => response.json());
@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const results = await Promise.all(requests);
 
-            // Check for API limit note from Alpha Vantage
             const rateLimitNote = results.find(res => res.Note && res.Note.includes('API call frequency'));
             if (rateLimitNote) {
                 throw new Error('Alpha Vantage API limit reached. Please wait a minute.');
@@ -109,12 +108,10 @@ document.addEventListener('DOMContentLoaded', function () {
             
             const stockItemsHtml = results.map(result => {
                 const quote = result['Global Quote'];
-                // If a specific stock fails or returns no data, skip it.
                 if (!quote || Object.keys(quote).length === 0) {
                     return ''; 
                 }
 
-                // Parse the new data structure from Alpha Vantage
                 const symbol = quote['01. symbol'];
                 const price = parseFloat(quote['05. price']).toFixed(2);
                 const change = parseFloat(quote['09. change']);
@@ -136,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>`;
             }).join('');
 
-            if (!stockItemsHtml) { // If all stocks failed
+            if (!stockItemsHtml) {
                  throw new Error("Could not retrieve data for any stocks.");
             }
 
