@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- CONFIGURATION ---
     // ✅ IMPORTANT: PASTE YOUR FREE API KEY FROM FINANCIAL MODELING PREP HERE
     // Get a free key from: https://site.financialmodelingprep.com/developer/docs/
-    const FMP_API_KEY = 'YOUR_API_KEY_HERE'; 
+    const FMP_API_KEY = 'KLmIuCOPF2f04KtK7z1JFVu9HfVN3Pkn'; 
     
     const stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'TSLA']; 
     
