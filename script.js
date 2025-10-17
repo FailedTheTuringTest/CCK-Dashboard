@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     // --- CONFIGURATION ---
-    const FMP_API_KEY = 'KLmIuCOPF2f04KtK7z1JFVu9HfVN3Pkn'; // <-- PASTE YOUR FREE API KEY HERE
-    // UPDATED: Removed non-US stock. Free plans often have limited exchange access.
-    const stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'TSLA'];
+    // PASTE YOUR FREE API KEY FROM FINANCIAL MODELING PREP HERE
+    const FMP_API_KEY = 'KLmIuCOPF2f04KtK7z1JFVu9HfVN3Pkn'; 
+    
+    // These are US-based stocks that work with the free FMP plan
+    const stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'TSLA']; 
     
     // --- 1. CLOCK AND DATE ---
     function updateTime() {
@@ -43,12 +45,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getWeatherByLocation() {
-        // Default to Cork, Ireland
+        // Default to Cork, Ireland if geolocation fails or is denied
         fetchWeather(51.8985, -8.4756, 'Cork'); 
     }
 
     // --- 3. NEWS (BBC NI) ---
-    // UPDATED: This function now builds a horizontal string for the scrolling ticker.
     function fetchNews() {
         const newsUrl = `https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Fnorthern_ireland%2Frss.xml`;
         fetch(newsUrl)
@@ -56,9 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 const newsInfo = document.getElementById('news-info');
                 let html = '';
-                // Get the first 10 articles
                 data.items.slice(0, 10).forEach(item => {
-                    // We create a long line of links separated by a symbol
                     html += `<a href="${item.link}" target="_blank">${item.title}</a><span class="news-separator">•</span>`;
                 });
                 newsInfo.innerHTML = html;
@@ -71,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- 4. STOCK PRICES ---
     function fetchStocks() {
+        // Safety check to ensure the API key has been added.
         if (FMP_API_KEY === 'YOUR_API_KEY_HERE' || !FMP_API_KEY) {
             document.getElementById('stock-info').innerHTML = `<p>Please add your FMP API key.</p>`;
             return;
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- INITIALIZE ---
     updateTime();
-    setInterval(updateTime, 1000);
+    setInterval(updateTime, 1000); // Update time every second
     getWeatherByLocation();
     fetchNews();
     fetchStocks();
