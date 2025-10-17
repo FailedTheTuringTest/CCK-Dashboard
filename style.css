@@ -135,4 +135,25 @@ body {
     #date { font-size: 1.2rem; }
     body { padding: 10px 10px 60px 10px; }
     .grid-container { gap: 10px; }
+
+/* --- Add this new code to your style.css file --- */
+
+/* Defines the pulsing animation */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Styles the placeholder and applies the animation */
+.loading-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 1.3rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* --- End of new code --- */
 }
