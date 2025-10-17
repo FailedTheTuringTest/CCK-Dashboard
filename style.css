@@ -101,15 +101,11 @@ body {
     white-space: nowrap;
 }
 
-/* CORRECTED: The animation is REMOVED from this rule... */
+/* CORRECTED: Single, updated rule for the news ticker */
 .news-ticker-content {
     display: inline-block;
     padding-left: 100%;
-}
-
-/* ...and ADDED to this new class. */
-.news-ticker-content.is-scrolling {
-    /* This animation will now only apply when we add the class via JavaScript */
+    /* UPDATED: Increased from 120s to 240s for a very slow, readable scroll. */
     animation: scroll-left 240s linear infinite;
 }
 
