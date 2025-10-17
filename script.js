@@ -46,10 +46,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => fetchWeather(position.coords.latitude, position.coords.longitude, 'Your Location'),
-                () => fetchWeather(51.8985, -8.4756, 'Cork') // Fallback on error/denial
+                () => fetchWeather(51.8985, -8.4756, 'Cork')
             );
         } else {
-            fetchWeather(51.8985, -8.4756, 'Cork'); // Fallback if geolocation not supported
+            fetchWeather(51.8985, -8.4756, 'Cork');
         }
     }
 
@@ -62,10 +62,14 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
 
-            const newsItems = data.items.slice(0, 10).map(item => 
+            const newsItemsHtml = data.items.slice(0, 10).map(item => 
                 `<a href="${item.link}" target="_blank">${item.title}</a>`
-            );
-            newsInfo.innerHTML = newsItems.join('<span class="news-separator">•</span>');
+            ).join('<span class="news-separator">•</span>');
+            
+            // UPDATED: Create a content block and duplicate it for the seamless loop
+            const contentBlock = `<div class="ticker-items-wrapper">${newsItemsHtml}</div>`;
+            newsInfo.innerHTML = contentBlock + contentBlock;
+
         } catch (error) {
             console.error('Error fetching news:', error);
             newsInfo.innerHTML = `<p class="error-message">Could not fetch news headlines.</p>`;
@@ -78,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- 4. STOCK PRICES ---
     async function fetchStocks() {
         const stockInfo = document.getElementById('stock-info');
-        if (FMP_API_KEY === 'KLmIuCOPF2f04KtK7z1JFVu9HfVN3Pkn' || !FMP_API_KEY) {
+        if (FMP_API_KEY === 'YOUR_API_KEY_HERE' || !FMP_API_KEY) {
             stockInfo.innerHTML = `<p class="error-message">Please add your FMP API key in script.js</p>`;
             stockInfo.classList.add('error');
             stockInfo.classList.remove('loading');
@@ -91,15 +95,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
 
-            // FMP API sometimes returns an error message object on success
-            if (data['Error Message']) {
-                throw new Error(data['Error Message']);
-            }
-            if (!data || data.length === 0) {
-                 throw new Error("API returned no data for the selected symbols.");
-            }
+            if (data['Error Message']) throw new Error(data['Error Message']);
+            if (!data || data.length === 0) throw new Error("API returned no data for the selected symbols.");
             
-            const stockItems = data.map(stock => {
+            const stockItemsHtml = data.map(stock => {
                 const changePercent = stock.changesPercentage.toFixed(2);
                 const changeClass = stock.change >= 0 ? 'stock-change-positive' : 'stock-change-negative';
                 const sign = stock.change >= 0 ? '+' : '';
@@ -109,8 +108,12 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <span class="${changeClass}">(${sign}${changePercent}%)</span>
                             </span>
                         </div>`;
-            });
-            stockInfo.innerHTML = stockItems.join('');
+            }).join('');
+
+            // UPDATED: Create a content block and duplicate it for the seamless loop
+            const contentBlock = `<div class="ticker-items-wrapper">${stockItemsHtml}</div>`;
+            stockInfo.innerHTML = contentBlock + contentBlock;
+
         } catch (error) {
             console.error('Error fetching stocks:', error);
             stockInfo.innerHTML = `<p class="error-message">Stock data unavailable. The free API may be down or has reached its limit.</p>`;
