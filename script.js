@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ✅ IMPORTANT: PASTE YOUR NEW, FREE API KEY FROM ALPHA VANTAGE HERE
     const ALPHA_VANTAGE_API_KEY = 'ZXLPFINJQ9R7SKQ2'; 
     
-    const stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'TSLA']; 
+    const stockSymbols = ['AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'TSLA', 'JPM', 'V', 'WMT'];
     
     // --- 1. CLOCK AND DATE ---
     function updateTime() {
