@@ -85,8 +85,6 @@ document.addEventListener('DOMContentLoaded', function () {
     async function fetchStocks() {
         const stockInfo = document.getElementById('stock-info');
         
-        // ✅ BUG FIX: This check now correctly looks for the placeholder text.
-        // The API call will proceed once you add your key above.
         if (FMP_API_KEY === 'YOUR_API_KEY_HERE' || !FMP_API_KEY) {
             stockInfo.innerHTML = `<p class="error-message">IMPORTANT: Add your FMP API key in script.js to see stocks.</p>`;
             stockInfo.classList.add('error');
@@ -106,11 +104,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const stockItemsHtml = data.map(stock => {
                 const changePercent = stock.changesPercentage.toFixed(2);
                 const changeClass = stock.change >= 0 ? 'stock-change-positive' : 'stock-change-negative';
-                const sign = stock.change >= 0 ? '+' : '';
+                
+                // UPDATED: Add up/down arrow logic
+                let arrow = '';
+                if (stock.change > 0) arrow = '▲';
+                if (stock.change < 0) arrow = '▼';
+                
                 return `<div class="stock-ticker-item">
                             ${stock.symbol}
                             <span class="price">${stock.price.toFixed(2)}
-                                <span class="${changeClass}">(${sign}${changePercent}%)</span>
+                                <span class="${changeClass}">
+                                    ${arrow} ${Math.abs(changePercent)}%
+                                </span>
                             </span>
                         </div>`;
             }).join('');
