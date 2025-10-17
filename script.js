@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- CONFIGURATION ---
     const FMP_API_KEY = 'KLmIuCOPF2f04KtK7z1JFVu9HfVN3Pkn'; // <-- PASTE YOUR FREE API KEY HERE
     // UPDATED: Removed non-US stock. Free plans often have limited exchange access.
-    const stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'TSLA']; 
+    const stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'TSLA'];
     
     // --- 1. CLOCK AND DATE ---
     function updateTime() {
