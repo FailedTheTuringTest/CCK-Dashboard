@@ -50,23 +50,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // --- 3. NEWS (BBC NI) ---
-    function fetchNews() {
-        const newsUrl = `https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Fnorthern_ireland%2Frss.xml`;
-        fetch(newsUrl)
-            .then(response => response.json())
-            .then(data => {
-                const newsInfo = document.getElementById('news-info');
-                let html = '';
-                data.items.slice(0, 10).forEach(item => {
-                    html += `<a href="${item.link}" target="_blank">${item.title}</a><span class="news-separator">•</span>`;
-                });
-                newsInfo.innerHTML = html;
-            })
-            .catch(error => {
-                console.error('Error fetching news:', error);
-                document.getElementById('news-info').innerHTML = `<p>Could not fetch news.</p>`;
+function fetchNews() {
+    const newsUrl = `https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Fnorthern_ireland%2Frss.xml`;
+    fetch(newsUrl)
+        .then(response => response.json())
+        .then(data => {
+            const newsInfo = document.getElementById('news-info');
+            
+            // UPDATED: This line clears the "Loading news..." message first.
+            newsInfo.innerHTML = ''; 
+
+            let html = '';
+            data.items.slice(0, 10).forEach(item => {
+                html += `<a href="${item.link}" target="_blank">${item.title}</a><span class="news-separator">•</span>`;
             });
-    }
+            newsInfo.innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error fetching news:', error);
+            document.getElementById('news-info').innerHTML = `<p>Could not fetch news.</p>`;
+        });
+}
 
     // --- 4. STOCK PRICES ---
     function fetchStocks() {
