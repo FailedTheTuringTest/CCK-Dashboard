@@ -20,6 +20,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- 2. WEATHER ---
     function fetchWeather(lat, lon, locationName) {
         const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m`;
+        
+        // UPDATE: Set title dynamically
+        document.getElementById('weather-title').textContent = `Weather in ${locationName}`;
+
         fetch(weatherUrl)
             .then(response => response.json())
             .then(data => {
@@ -32,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     61: 'Slight rain', 63: 'Moderate rain', 65: 'Heavy rain', 80: 'Slight showers'
                 }[weatherCode] || 'Unknown';
                 weatherInfo.innerHTML = `
-                    <div class="weather-item">Location: <span>${locationName}</span></div>
                     <div class="weather-item">Temperature: <span>${temp}°C</span></div>
                     <div class="weather-item">Condition: <span>${weatherDescription}</span></div>
                     <div class="weather-item">Wind Speed: <span>${wind} km/h</span></div>
@@ -44,37 +47,53 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+    // UPDATED: Function now tries to get user's location first
     function getWeatherByLocation() {
-        // Default to Cork, Ireland if geolocation fails or is denied
-        fetchWeather(51.8985, -8.4756, 'Cork'); 
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    // Success: Fetch weather for user's location
+                    fetchWeather(position.coords.latitude, position.coords.longitude, 'Your Location');
+                },
+                () => {
+                    // Error/Denied: Fallback to Cork
+                    fetchWeather(51.8985, -8.4756, 'Cork');
+                }
+            );
+        } else {
+            // Geolocation not supported: Fallback to Cork
+            fetchWeather(51.8985, -8.4756, 'Cork');
+        }
     }
 
     // --- 3. NEWS (BBC NI) ---
-function fetchNews() {
-    const newsUrl = `https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Fnorthern_ireland%2Frss.xml`;
-    fetch(newsUrl)
-        .then(response => response.json())
-        .then(data => {
-            const newsInfo = document.getElementById('news-info');
-            
-            // UPDATED: This line clears the "Loading news..." message first.
-            newsInfo.innerHTML = ''; 
-
-            let html = '';
-            data.items.slice(0, 10).forEach(item => {
-                html += `<a href="${item.link}" target="_blank">${item.title}</a><span class="news-separator">•</span>`;
+    function fetchNews() {
+        const newsUrl = `https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Fnorthern_ireland%2Frss.xml`;
+        const newsInfo = document.getElementById('news-info');
+        
+        fetch(newsUrl)
+            .then(response => response.json())
+            .then(data => {
+                // FIX: Create an array of links first
+                const newsItems = data.items.slice(0, 10).map(item => 
+                    `<a href="${item.link}" target="_blank">${item.title}</a>`
+                );
+                
+                // FIX: Join the array with the separator to avoid an extra one at the end
+                newsInfo.innerHTML = newsItems.join('<span class="news-separator">•</span>');
+                
+                // FIX: Remove the 'loading' class to start the scroll animation
+                newsInfo.classList.remove('loading');
+            })
+            .catch(error => {
+                console.error('Error fetching news:', error);
+                newsInfo.innerHTML = `<p>Could not fetch news.</p>`;
+                newsInfo.classList.remove('loading'); // Also remove on error
             });
-            newsInfo.innerHTML = html;
-        })
-        .catch(error => {
-            console.error('Error fetching news:', error);
-            document.getElementById('news-info').innerHTML = `<p>Could not fetch news.</p>`;
-        });
-}
+    }
 
     // --- 4. STOCK PRICES ---
     function fetchStocks() {
-        // Safety check to ensure the API key has been added.
         if (FMP_API_KEY === 'YOUR_API_KEY_HERE' || !FMP_API_KEY) {
             document.getElementById('stock-info').innerHTML = `<p>Please add your FMP API key.</p>`;
             return;
@@ -87,7 +106,7 @@ function fetchNews() {
             })
             .then(data => {
                 const stockInfo = document.getElementById('stock-info');
-                if (data.length === 0) {
+                if (!data || data.length === 0) {
                     stockInfo.innerHTML = `<p>Could not fetch stock data. The API may have limitations on the selected tickers.</p>`;
                     return;
                 }
