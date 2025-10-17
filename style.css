@@ -6,7 +6,6 @@ body {
     font-family: 'Roboto', sans-serif;
     color: #ffffff;
     margin: 0;
-    /* Add padding to the bottom to prevent content from hiding behind the news bar */
     padding: 20px 20px 70px 20px; 
     display: flex;
     justify-content: center;
@@ -81,7 +80,8 @@ body {
 .stock-change-positive { color: #4caf50; }
 .stock-change-negative { color: #f44336; }
 
-/* --- NEW: News Ticker Styling --- */
+
+/* --- News Ticker Styling --- */
 @keyframes scroll-left {
     0% { transform: translateX(100%); }
     100% { transform: translateX(-100%); }
@@ -98,27 +98,21 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     padding: 10px 0;
     overflow: hidden;
-    white-space: nowrap; /* Prevents text from wrapping */
+    white-space: nowrap;
 }
 
+/* CORRECTED: Single, updated rule for the news ticker */
 .news-ticker-content {
     display: inline-block;
     padding-left: 100%;
-    animation: scroll-left 45s linear infinite; /* Adjust duration to change speed */
-}
-
-.news-ticker-content {
-    display: inline-block;
-    padding-left: 100%;
-    /* UPDATED: Changed 45s to 120s to make the scroll much slower. Adjust as you like. */
-    animation: scroll-left 120s linear infinite;
+    /* UPDATED: Increased from 120s to 240s for a very slow, readable scroll. */
+    animation: scroll-left 240s linear infinite;
 }
 
 .news-ticker-content a {
     display: inline-block;
     color: #ffffff;
     text-decoration: none;
-    /* UPDATED: Increased font size for better readability. */
     font-size: 1.3rem; 
     padding: 0 20px;
 }
@@ -128,32 +122,25 @@ body {
     padding: 0 10px;
 }
 
-/* --- End of News Ticker Styling --- */
-
-@media (max-width: 600px) {
-    #time { font-size: 3rem; }
-    #date { font-size: 1.2rem; }
-    body { padding: 10px 10px 60px 10px; }
-    .grid-container { gap: 10px; }
-
-/* --- Add this new code to your style.css file --- */
-
-/* Defines the pulsing animation */
 @keyframes pulse {
     0% { opacity: 1; }
     50% { opacity: 0.5; }
     100% { opacity: 1; }
 }
 
-/* Styles the placeholder and applies the animation */
 .loading-placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     font-size: 1.3rem;
+    /* FIX: The loading text should not scroll. We remove the scroll animation here. */
     animation: pulse 2s ease-in-out infinite;
 }
 
-/* --- End of new code --- */
+@media (max-width: 600px) {
+    #time { font-size: 3rem; }
+    #date { font-size: 1.2rem; }
+    body { padding: 10px 10px 60px 10px; }
+    .grid-container { gap: 10px; }
 }
