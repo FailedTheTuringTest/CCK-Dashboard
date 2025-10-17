@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     // --- CONFIGURATION ---
-    const FMP_API_KEY = 'KLmIuCOPF2f04KtK7z1JFVu9HfVN3Pkn'; 
+    // ✅ IMPORTANT: PASTE YOUR FREE API KEY FROM FINANCIAL MODELING PREP HERE
+    // Get a free key from: https://site.financialmodelingprep.com/developer/docs/
+    const FMP_API_KEY = 'YOUR_API_KEY_HERE'; 
+    
     const stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'TSLA']; 
     
     // --- 1. CLOCK AND DATE ---
@@ -66,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 `<a href="${item.link}" target="_blank">${item.title}</a>`
             ).join('<span class="news-separator">•</span>');
             
-            // UPDATED: Create a content block and duplicate it for the seamless loop
             const contentBlock = `<div class="ticker-items-wrapper">${newsItemsHtml}</div>`;
             newsInfo.innerHTML = contentBlock + contentBlock;
 
@@ -82,8 +84,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- 4. STOCK PRICES ---
     async function fetchStocks() {
         const stockInfo = document.getElementById('stock-info');
+        
+        // ✅ BUG FIX: This check now correctly looks for the placeholder text.
+        // The API call will proceed once you add your key above.
         if (FMP_API_KEY === 'YOUR_API_KEY_HERE' || !FMP_API_KEY) {
-            stockInfo.innerHTML = `<p class="error-message">Please add your FMP API key in script.js</p>`;
+            stockInfo.innerHTML = `<p class="error-message">IMPORTANT: Add your FMP API key in script.js to see stocks.</p>`;
             stockInfo.classList.add('error');
             stockInfo.classList.remove('loading');
             return;
@@ -110,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>`;
             }).join('');
 
-            // UPDATED: Create a content block and duplicate it for the seamless loop
             const contentBlock = `<div class="ticker-items-wrapper">${stockItemsHtml}</div>`;
             stockInfo.innerHTML = contentBlock + contentBlock;
 

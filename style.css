@@ -80,7 +80,6 @@ body {
 .stock-change-negative { color: #f44336; }
 
 /* --- Ticker Styling --- */
-/* UPDATED: Keyframes for seamless looping animation */
 @keyframes seamless-scroll-left {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
@@ -99,41 +98,34 @@ body {
     overflow: hidden;
     white-space: nowrap;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
-    /* UPDATED: Grouped the gradient background property */
     background: linear-gradient(to bottom, #454545, #111111);
-}
-
-.stock-ticker-bar {
-    padding: 8px 0;
-}
-.news-ticker-bar {
+    /* UPDATED: Unified padding to make tickers the same height */
     padding: 15px 0;
 }
 
-
 .stock-ticker-content, .news-ticker-content {
-    /* UPDATED: Use flex display for the seamless loop technique */
     display: flex;
     width: fit-content;
     animation-play-state: running;
-    /* REMOVED: padding-left is no longer needed */
 }
 
-/* UPDATED: Double the animation duration because content is duplicated */
 .stock-ticker-content { animation: seamless-scroll-left 240s linear infinite; }
 .news-ticker-content { animation: seamless-scroll-left 480s linear infinite; }
 
-/* NEW: Wrapper for each set of items to prevent internal line breaking */
 .ticker-items-wrapper {
     display: flex;
     align-items: center;
-    flex-shrink: 0; /* Prevent the wrapper from shrinking */
+    flex-shrink: 0;
+}
+
+/* UPDATED: Grouped rules for identical font sizes */
+.stock-ticker-item, .news-ticker-content a {
+    font-size: 1.5rem;
 }
 
 .stock-ticker-item {
     display: inline-flex;
     align-items: baseline;
-    font-size: 1.2rem;
     margin: 0 25px;
     font-weight: 700;
 }
@@ -143,7 +135,6 @@ body {
     display: inline-block;
     color: #ffffff;
     text-decoration: none;
-    font-size: 1.5rem;
     padding: 0 20px;
 }
 
@@ -151,7 +142,7 @@ body {
 .loading-placeholder {
     animation: pulse 2s ease-in-out infinite;
     font-size: 1.3rem;
-    width: 100vw; /* Ensure placeholder spans the screen */
+    width: 100vw;
     text-align: center;
 }
 
