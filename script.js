@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // --- CONFIGURATION ---
-    // ✅ IMPORTANT: PASTE YOUR FREE API KEY FROM FINANCIAL MODELING PREP HERE
-    // Get a free key from: https://site.financialmodelingprep.com/developer/docs/
-    const FMP_API_KEY = 'KLmIuCOPF2f04KtK7z1JFVu9HfVN3Pkn'; 
+    // ✅ IMPORTANT: PASTE YOUR NEW, FREE API KEY FROM ALPHA VANTAGE HERE
+    const ALPHA_VANTAGE_API_KEY = 'ZXLPFINJQ9R7SKQ2'; 
     
     const stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'TSLA']; 
     
@@ -81,38 +80,55 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // --- 4. STOCK PRICES ---
+    // --- 4. STOCK PRICES (REBUILT FOR ALPHA VANTAGE) ---
     async function fetchStocks() {
         const stockInfo = document.getElementById('stock-info');
         
-        if (FMP_API_KEY === 'YOUR_API_KEY_HERE' || !FMP_API_KEY) {
-            stockInfo.innerHTML = `<p class="error-message">IMPORTANT: Add your FMP API key in script.js to see stocks.</p>`;
+        if (ALPHA_VANTAGE_API_KEY === 'YOUR_API_KEY_HERE' || !ALPHA_VANTAGE_API_KEY) {
+            stockInfo.innerHTML = `<p class="error-message">IMPORTANT: Add your Alpha Vantage API key in script.js to see stocks.</p>`;
             stockInfo.classList.add('error');
             stockInfo.classList.remove('loading');
             return;
         }
         
-        const stockUrl = `https://financialmodelingprep.com/api/v3/quote/${stockSymbols.join(',')}?apikey=${FMP_API_KEY}`;
         try {
-            const response = await fetch(stockUrl);
-            if (!response.ok) throw new Error('Network response was not ok');
-            const data = await response.json();
+            // Alpha Vantage free tier requires fetching each stock one by one.
+            // We use Promise.all to run all requests in parallel for speed.
+            const requests = stockSymbols.map(symbol => {
+                const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
+                return fetch(url).then(response => response.json());
+            });
 
-            if (data['Error Message']) throw new Error(data['Error Message']);
-            if (!data || data.length === 0) throw new Error("API returned no data for the selected symbols.");
+            const results = await Promise.all(requests);
+
+            // Check for API limit note from Alpha Vantage
+            const rateLimitNote = results.find(res => res.Note && res.Note.includes('API call frequency'));
+            if (rateLimitNote) {
+                throw new Error('Alpha Vantage API limit reached. Please wait a minute.');
+            }
             
-            const stockItemsHtml = data.map(stock => {
-                const changePercent = stock.changesPercentage.toFixed(2);
-                const changeClass = stock.change >= 0 ? 'stock-change-positive' : 'stock-change-negative';
+            const stockItemsHtml = results.map(result => {
+                const quote = result['Global Quote'];
+                // If a specific stock fails or returns no data, skip it.
+                if (!quote || Object.keys(quote).length === 0) {
+                    return ''; 
+                }
+
+                // Parse the new data structure from Alpha Vantage
+                const symbol = quote['01. symbol'];
+                const price = parseFloat(quote['05. price']).toFixed(2);
+                const change = parseFloat(quote['09. change']);
+                const changePercent = parseFloat(quote['10. change percent'].replace('%', '')).toFixed(2);
                 
-                // UPDATED: Add up/down arrow logic
+                const changeClass = change >= 0 ? 'stock-change-positive' : 'stock-change-negative';
+                
                 let arrow = '';
-                if (stock.change > 0) arrow = '▲';
-                if (stock.change < 0) arrow = '▼';
+                if (change > 0) arrow = '▲';
+                if (change < 0) arrow = '▼';
                 
                 return `<div class="stock-ticker-item">
-                            ${stock.symbol}
-                            <span class="price">${stock.price.toFixed(2)}
+                            ${symbol}
+                            <span class="price">${price}
                                 <span class="${changeClass}">
                                     ${arrow} ${Math.abs(changePercent)}%
                                 </span>
@@ -120,12 +136,16 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>`;
             }).join('');
 
+            if (!stockItemsHtml) { // If all stocks failed
+                 throw new Error("Could not retrieve data for any stocks.");
+            }
+
             const contentBlock = `<div class="ticker-items-wrapper">${stockItemsHtml}</div>`;
             stockInfo.innerHTML = contentBlock + contentBlock;
 
         } catch (error) {
             console.error('Error fetching stocks:', error);
-            stockInfo.innerHTML = `<p class="error-message">Stock data unavailable. The free API may be down or has reached its limit.</p>`;
+            stockInfo.innerHTML = `<p class="error-message">Stock data unavailable. Check API key or wait if rate limit was reached.</p>`;
             stockInfo.classList.add('error');
         } finally {
             stockInfo.classList.remove('loading');
