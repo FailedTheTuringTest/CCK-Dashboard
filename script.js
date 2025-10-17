@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- 4. STOCK PRICES ---
     function fetchStocks() {
-        if (FMP_API_KEY === 'KLmIuCOPF2f04KtK7z1JFVu9HfVN3Pkn' || !FMP_API_KEY) {
+        if (FMP_API_KEY === 'YOUR_API_KEY_HERE' || !FMP_API_KEY) {
             document.getElementById('stock-info').innerHTML = `<p>Please add your FMP API key in script.js</p>`;
             return;
         }
