@@ -6,23 +6,32 @@ body {
     font-family: 'Roboto', sans-serif;
     color: #ffffff;
     margin: 0;
-    padding: 20px 20px 70px 20px; 
+    padding: 20px;
+    /* UPDATED: Body is now a flex container to manage main content and tickers */
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes tickers to bottom */
     min-height: 100vh;
     box-sizing: border-box;
 }
 
-.grid-container {
-    display: grid;
-    /* UPDATED: Changed to a 3-column layout to create a center space */
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto auto; /* Define two rows */
-    gap: 20px;
+/* --- NEW: Layout Styling --- */
+.main-content {
+    display: flex;
+    justify-content: space-between; /* Pushes columns to the sides */
     width: 100%;
-    max-width: 1200px;
+    max-width: 1600px;
+    margin: 0 auto;
 }
+
+.widget-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 380px; /* Define a fixed width for columns */
+}
+/* --- END: New Layout Styling --- */
+
 
 .card {
     background: rgba(0, 0, 0, 0.4);
@@ -42,42 +51,10 @@ body {
     margin-bottom: 15px;
 }
 
-/* --- UPDATED GRID POSITIONING --- */
-.card-weather {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-}
-
-.card-stocks {
-    grid-column: 3 / 4;
-    grid-row: 1 / 2;
-}
-
 .card-time {
-    grid-column: 1 / -1; /* Span all 3 columns */
-    grid-row: 2 / 3;
     text-align: center;
     font-weight: 300;
 }
-
-/* --- NEW: Styling for the central icon placeholder --- */
-.card-icon-placeholder {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-    background: rgba(0, 0, 0, 0.2); /* Slightly different background */
-    border-style: dashed;
-}
-
-.placeholder-text {
-    font-size: 1.5rem;
-    font-weight: 300;
-    opacity: 0.7;
-}
-
 
 #time {
     font-size: 5rem;
@@ -98,64 +75,86 @@ body {
     font-weight: 700;
 }
 
-.stock-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-.stock-item:last-child {
-    border-bottom: none;
-}
-.stock-price {
-    font-weight: 700;
-}
 .stock-change-positive { color: #4caf50; }
 .stock-change-negative { color: #f44336; }
 
-
-/* --- News Ticker Styling --- */
+/* --- Ticker Styling --- */
 @keyframes scroll-left {
     0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
+    100% { transform: translateX(-150%); } /* Adjust end position for long content */
 }
 
-.news-ticker-bar {
+/* NEW: Container for both tickers */
+.tickers-container {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    /* UPDATED: Changed to a solid grey-black color */
-    background-color: #222; 
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 10px 0;
+}
+
+.stock-ticker-bar, .news-ticker-bar {
+    width: 100%;
     overflow: hidden;
     white-space: nowrap;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* NEW: Stock Ticker styles */
+.stock-ticker-bar {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 8px 0;
+}
+
+.stock-ticker-content {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll-left 120s linear infinite;
+    animation-play-state: running;
+}
+
+.stock-ticker-item {
+    display: inline-flex; /* Use flex to align items nicely */
+    align-items: baseline;
+    font-size: 1.2rem;
+    margin: 0 25px;
+    font-weight: 700;
+}
+
+.stock-ticker-item .price {
+    margin-left: 10px;
+    font-weight: 400;
+}
+
+/* UPDATED: News Ticker styles */
+.news-ticker-bar {
+    /* UPDATED: Gradient background and increased size */
+    background: linear-gradient(to bottom, #454545, #111111);
+    padding: 15px 0;
 }
 
 .news-ticker-content {
     display: inline-block;
     padding-left: 100%;
     animation: scroll-left 240s linear infinite;
-    /* FIX: Ensure animation is running by default */
     animation-play-state: running;
 }
-
-/* FIX: This class pauses the animation while content is loading */
-.news-ticker-content.loading {
-    animation-play-state: paused;
-    display: block; /* Allows for centering */
-    text-align: center;
-    padding-left: 0;
-}
-
 
 .news-ticker-content a {
     display: inline-block;
     color: #ffffff;
     text-decoration: none;
-    font-size: 1.3rem; 
+    font-size: 1.5rem; /* Increased font size */
     padding: 0 20px;
+}
+
+/* Shared Ticker Helper Classes */
+.stock-ticker-content.loading, .news-ticker-content.loading {
+    animation-play-state: paused;
+    display: block;
+    text-align: center;
+    padding-left: 0;
 }
 
 .news-separator {
@@ -164,29 +163,25 @@ body {
 }
 
 @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
+    0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; }
 }
 
 .loading-placeholder {
     animation: pulse 2s ease-in-out infinite;
+    font-size: 1.3rem;
 }
 
-@media (max-width: 768px) {
-    /* UPDATED: Media query to stack cards on smaller screens */
-    .grid-container {
-        grid-template-columns: 1fr; /* Single column */
-        grid-template-rows: auto;   /* Rows adjust automatically */
+@media (max-width: 850px) {
+    .main-content {
+        flex-direction: column; /* Stack columns vertically */
+        align-items: center; /* Center them on the page */
+        gap: 20px;
     }
-    /* Set order for mobile view */
-    .card-time { order: 1; }
-    .card-weather { order: 2; }
-    .card-stocks { order: 3; }
-    .card-icon-placeholder { display: none; } /* Hide placeholder on mobile */
-
+    .widget-column {
+        width: 100%;
+        max-width: 450px;
+    }
     #time { font-size: 3rem; }
     #date { font-size: 1.2rem; }
-    body { padding: 10px 10px 60px 10px; }
-    .grid-container { gap: 10px; }
+    body { padding-bottom: 150px; } /* Add more padding for tickers */
 }

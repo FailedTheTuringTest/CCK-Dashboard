@@ -10,34 +10,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="grid-container">
-        <div class="card card-weather">
-            <h2 class="card-title" id="weather-title">Weather</h2>
-            <div id="weather-info">
-                <p>Loading weather...</p>
-            </div>
-        </div>
-
-        <div class="card card-icon-placeholder">
-            <div class="placeholder-text">Your Icon Here</div>
-        </div>
-
-        <div class="card card-stocks">
-            <h2 class="card-title">Stock Prices</h2>
-            <div id="stock-info">
-                <p>Loading stocks...</p>
+    <div class="main-content">
+        <div class="widget-column">
+            <div class="card card-time">
+                <div id="time">1:35:22 PM</div>
+                <div id="date">Friday, 17 October 2025</div>
             </div>
         </div>
         
-        <div class="card card-time">
-            <div id="time">1:35:22 PM</div>
-            <div id="date">Friday, 17 October 2025</div>
+        <div class="widget-column">
+            <div class="card card-weather">
+                <h2 class="card-title" id="weather-title">Weather</h2>
+                <div id="weather-info">
+                    <p>Loading weather...</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="news-ticker-bar">
-        <div class="news-ticker-content loading" id="news-info">
-            <span class="loading-placeholder">Loading news...</span>
+    <div class="tickers-container">
+        <div class="stock-ticker-bar">
+            <div class="stock-ticker-content loading" id="stock-info">
+                <span class="loading-placeholder">Loading stocks...</span>
+            </div>
+        </div>
+
+        <div class="news-ticker-bar">
+            <div class="news-ticker-content loading" id="news-info">
+                <span class="loading-placeholder">Loading news...</span>
+            </div>
         </div>
     </div>
 
