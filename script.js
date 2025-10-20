@@ -1,10 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     // --- CONFIGURATION ---
-    // ✅ IMPORTANT: PASTE YOUR NEW, FREE API KEY FROM ALPHA VANTAGE HERE
     const ALPHA_VANTAGE_API_KEY = 'KPWHMKBFE1SMAA35';
-
     const stockSymbols = ['AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'TSLA', 'JPM', 'V', 'WMT'];
-    
+
     // --- 1. CLOCK AND DATE ---
     function updateTime() {
         const timeEl = document.getElementById('time');
@@ -24,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const response = await fetch(weatherUrl);
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
-            
+
             const weatherInfo = document.getElementById('weather-info');
             const temp = data.current.temperature_2m;
             const wind = data.current.wind_speed_10m;
@@ -48,11 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => fetchWeather(position.coords.latitude, position.coords.longitude, 'Your Location'),
-                // UPDATED: Fallback location is now Westmeath
                 () => fetchWeather(53.5267, -7.3421, 'Westmeath')
             );
         } else {
-            // UPDATED: Fallback location is now Westmeath
             fetchWeather(53.5267, -7.3421, 'Westmeath');
         }
     }
@@ -65,14 +61,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const response = await fetch(newsUrl);
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
-
-            const newsItemsHtml = data.items.slice(0, 10).map(item => 
+            const newsItemsHtml = data.items.slice(0, 10).map(item =>
                 `<a href="${item.link}" target="_blank">${item.title}</a>`
             ).join('<span class="news-separator">•</span>');
-            
+
             const contentBlock = `<div class="ticker-items-wrapper">${newsItemsHtml}</div>`;
             newsInfo.innerHTML = contentBlock + contentBlock;
-
         } catch (error) {
             console.error('Error fetching news:', error);
             newsInfo.innerHTML = `<p class="error-message">Could not fetch news headlines.</p>`;
@@ -82,16 +76,37 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // --- 4. STOCK PRICES (FIXED FOR RATE LIMITING) ---
-
+    // --- 4. STOCK PRICES (RESTRICTED TO 8:55 AM - 4:05 PM) ---
     // Helper function to create a delay
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
+    // Check if current time is within the allowed window
+    function isWithinAllowedHours() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const startHour = 8;
+        const startMinute = 55;
+        const endHour = 16;
+        const endMinute = 5;
+
+        if (hours > startHour || (hours === startHour && minutes >= startMinute)) {
+            if (hours < endHour || (hours === endHour && minutes <= endMinute)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     async function fetchStocks() {
         const stockInfo = document.getElementById('stock-info');
-        // Delay between API calls in milliseconds. Alpha Vantage free tier allows 5 calls/min,
-        // so 15 seconds (15000ms) is a safe interval.
-        const API_CALL_DELAY = 15000; 
+        const API_CALL_DELAY = 15000; // 15 seconds between calls (5 calls/min)
+
+        if (!isWithinAllowedHours()) {
+            stockInfo.innerHTML = `<p class="info-message">Stock data is only updated between 8:55 AM and 4:05 PM.</p>`;
+            stockInfo.classList.remove('loading');
+            return;
+        }
 
         if (ALPHA_VANTAGE_API_KEY === '(api_key)' || !ALPHA_VANTAGE_API_KEY) {
             stockInfo.innerHTML = `<p class="error-message">IMPORTANT: Add your Alpha Vantage API key in the script to see stocks.</p>`;
@@ -99,42 +114,34 @@ document.addEventListener('DOMContentLoaded', function () {
             stockInfo.classList.remove('loading');
             return;
         }
-        
-        // This array will hold the HTML for each stock item
-        let stockItemsHtml = ''; 
 
+        let stockItemsHtml = '';
         try {
-            // Loop through each symbol sequentially instead of all at once
             for (const symbol of stockSymbols) {
                 const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
                 const response = await fetch(url);
                 if (!response.ok) {
-                     // If a single fetch fails, log it but continue to the next one
                     console.error(`Error fetching data for ${symbol}: ${response.statusText}`);
-                    continue; // Skip to the next symbol
+                    continue;
                 }
-                
+
                 const result = await response.json();
-                
-                // Check for API rate limit note in the response
                 if (result.Note && result.Note.includes('API call frequency')) {
                     throw new Error('Alpha Vantage API rate limit reached. Please wait a minute and refresh.');
                 }
 
                 const quote = result['Global Quote'];
-                // If the quote object is valid, build the HTML for it
                 if (quote && Object.keys(quote).length > 0) {
                     const symbol = quote['01. symbol'];
                     const price = parseFloat(quote['05. price']).toFixed(2);
                     const change = parseFloat(quote['09. change']);
                     const changePercent = parseFloat(quote['10. change percent'].replace('%', '')).toFixed(2);
-                    
+
                     const changeClass = change >= 0 ? 'stock-change-positive' : 'stock-change-negative';
-                    
                     let arrow = '';
                     if (change > 0) arrow = '▲';
                     if (change < 0) arrow = '▼';
-                    
+
                     stockItemsHtml += `<div class="stock-ticker-item">
                                             ${symbol}
                                             <span class="price">${price}
@@ -144,19 +151,15 @@ document.addEventListener('DOMContentLoaded', function () {
                                             </span>
                                         </div>`;
                 }
-
-                // Wait for the specified delay before the next iteration
                 await delay(API_CALL_DELAY);
             }
 
             if (!stockItemsHtml) {
-                 throw new Error("Could not retrieve data for any stocks. Check symbols or API key.");
+                throw new Error("Could not retrieve data for any stocks. Check symbols or API key.");
             }
 
-            // Once all stocks are fetched, update the DOM
             const contentBlock = `<div class="ticker-items-wrapper">${stockItemsHtml}</div>`;
-            stockInfo.innerHTML = contentBlock + contentBlock; // Duplicate for seamless ticker effect
-
+            stockInfo.innerHTML = contentBlock + contentBlock;
         } catch (error) {
             console.error('Error fetching stocks:', error);
             stockInfo.innerHTML = `<p class="error-message">${error.message}</p>`;
@@ -166,11 +169,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-
-    // --- INITIALIZE ---
+    // --- INITIALIZE AND SET UP STOCK REFRESH ---
     updateTime();
     setInterval(updateTime, 1000);
     getWeatherByLocation();
     fetchNews();
     fetchStocks();
+
+    // Refresh stocks every 15 minutes during allowed hours
+    setInterval(() => {
+        if (isWithinAllowedHours()) {
+            fetchStocks();
+        }
+    }, 900000); // 15 minutes in milliseconds
 });
