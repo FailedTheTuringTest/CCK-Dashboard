@@ -1,5 +1,5 @@
 body {
-    background-image: url('crestbackground.png'); /* Replace with your image path */
+    background-image: 'crestbackground.png'; /* Replace with your image path */
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -196,20 +196,5 @@ body {
     gap: 20px;
     padding-bottom: 150px;
     }
-
-.center-logo {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 50;
-    pointer-events: none;
-}
-.logo-img {
-    display: block; /* Removes any extra space below the image */
-    max-width: 300px;
-    height: auto;
-    opacity: 0.9;
-}
 
 }
