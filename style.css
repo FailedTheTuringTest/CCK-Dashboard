@@ -1,8 +1,9 @@
 body {
-    background-image: url('https://images.unsplash.com/photo-1554141323-c35b7b3469d4');
+    background-image: url('crestbackground.png'); /* Replace with your image path */
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    background-repeat: no-repeat;
     font-family: 'Roboto', sans-serif;
     color: #ffffff;
     margin: 0;
@@ -201,7 +202,7 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(calc(-50% + 20px), calc(-50% - 10px));
+    transform: translate(-50%, -50%);
     z-index: 50;
     pointer-events: none;
 }
