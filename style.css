@@ -1,5 +1,5 @@
 body {
-    background-image: 'crestbackground.png'; /* Replace with your image path */
+    background-image: url('crestbackground.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -10,6 +10,7 @@ body {
     min-height: 100vh;
     box-sizing: border-box;
 }
+
 
 .widget-column {
     position: absolute;
