@@ -203,13 +203,13 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 50;
-    pointer-events: none; /* Allows clicks to pass through */
-    }
-
+    pointer-events: none;
+}
 .logo-img {
-    max-width: 300px; /* Adjust as needed */
+    display: block; /* Removes any extra space below the image */
+    max-width: 300px;
     height: auto;
-    opacity: 0.9; /* Adjust as needed */
-    }
+    opacity: 0.9;
+}
 
 }
