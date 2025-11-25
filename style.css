@@ -135,6 +135,7 @@ body {
 
 .stock-ticker-item, .news-ticker-content a {
     font-size: 1.5rem;
+    color: #ffffff;
 }
 
 .stock-ticker-item {
@@ -147,7 +148,6 @@ body {
 
 .news-ticker-content a {
     display: inline-block;
-    color: #ffffff;
     text-decoration: none;
     padding: 0 20px;
 }
