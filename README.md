@@ -32,7 +32,7 @@ cd CCK-Dashboard
 
 ## Usage
 
-Get your own free API key from Alpha Vantage instead of using the one found in "kiosk.py". (https://www.alphavantage.co/)
+Get your own free API key from Alpha Vantage instead of using the one found in "script.js". (https://www.alphavantage.co/)
 
 ## Contact
 
