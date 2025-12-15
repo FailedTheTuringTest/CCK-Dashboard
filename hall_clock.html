@@ -3,22 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>hall_clock</title>
+    <title>news_board</title>
     <link rel="stylesheet" href="css/hall_clock_style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="widget-column">
-        <div class="card card-time">
-            <div id="time">//://:// PM</div>
-            <div id="date">Sunday, 12 July 2009</div>
-        </div>
-        <div class="card card-weather">
-            <h2 class="card-title" id="weather-title">Weather</h2>
-            <div id="weather-info">
-                <p>Loading weather...</p>
+    <div class="widget-container">
+        <!-- Logo as a background image -->
+        <div class="logo"></div>
+        <!-- Time and weather widgets -->
+        <div class="widget-column">
+            <div class="card card-time">
+                <div id="time">//://:// PM</div>
+                <div id="date">Sunday, 12 July 2009</div>
+            </div>
+            <div class="card card-weather">
+                <h2 class="card-title" id="weather-title">Weather</h2>
+                <div id="weather-info">
+                    <p>Loading weather...</p>
+                </div>
             </div>
         </div>
     </div>
