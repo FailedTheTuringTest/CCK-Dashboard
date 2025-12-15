@@ -1,7 +1,7 @@
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #121212; /* Dark background for hall clock */
-    color: #FFFFFF; /* White text for contrast */
+    background-color: #121212;
+    color: #FFFFFF;
     margin: 0;
     padding: 20px;
     box-sizing: border-box;
@@ -20,28 +20,28 @@ body {
 }
 
 #time {
-    font-size: 8rem; /* Larger font size */
+    font-size: 8rem;
     font-weight: 700;
-    margin-bottom: 20px; /* Space between time and date */
+    margin-bottom: 20px;
 }
 
 #date {
-    font-size: 2rem; /* Slightly larger date */
-    margin-bottom: 30px; /* Space between date and weather */
+    font-size: 2rem;
+    margin-bottom: 30px;
 }
 
 /* Weather styling */
 .card-weather {
     width: 100%;
-    margin-top: 20px; /* Space between time/date and weather */
+    margin-top: 20px;
 }
 
 .weather-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.5rem; /* Larger weather text */
-    margin-bottom: 10px; /* Space between weather items */
+    font-size: 1.5rem;
+    margin-bottom: 10px;
 }
 
 .weather-item span {
@@ -50,20 +50,12 @@ body {
 
 /* Adjust widget columns for centering */
 .widget-column {
-    position: relative;
     width: 100%;
-    max-width: 800px; /* Wider container for better centering */
+    max-width: 800px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin: 0 auto; /* Center the widget column */
-    top: 20px;
-}
-
-.widget-column.left,
-.widget-column.right {
-    left: 0;
-    right: 0;
+    margin: 0 auto;
 }
 
 /* Responsive adjustments */
