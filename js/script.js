@@ -1,7 +1,20 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     // --- CONFIGURATION ---
-    const ALPHA_VANTAGE_API_KEY = 'KPWHMKBFE1SMAA35';
+    let ALPHA_VANTAGE_API_KEY = '';
     const stockSymbols = ['AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'TSLA', 'JPM', 'V', 'WMT'];
+
+    // Load API key from backend
+    async function loadConfig() {
+        try {
+            const response = await fetch('/api/config');
+            const config = await response.json();
+            ALPHA_VANTAGE_API_KEY = config.apiKey;
+        } catch (error) {
+            console.warn('Could not load config from backend:', error);
+        }
+    }
+
+    await loadConfig();
 
     // --- 1. CLOCK AND DATE ---
     function updateTime() {
