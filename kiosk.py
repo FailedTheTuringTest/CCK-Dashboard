@@ -1,4 +1,3 @@
-from flask import Flask, jsonify
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 import threading
