@@ -4,7 +4,7 @@ A website dashboard application designed to display time, weather, and other ess
 
 ## Overview
 
-CCK-Dashboard is a web-based dashboard that provides real-time information display capabilities for Columba College Killucan. The application is built using a modern web stack and serves as an information hub for the school community.
+CCK-Dashboard is a web-based newsboard and clock that provides a real-time information display for convenience in Columba College Killucan. The application is built using an HTTP server and some API calls to provide accurate weather, time, and stock data.
 
 ## Features
 
@@ -14,7 +14,7 @@ CCK-Dashboard is a web-based dashboard that provides real-time information displ
 - Responsive design for various screen sizes
 
 ### Prerequisites
-- Web browser
+- Web browser (Chrome may require different drivers. Tested purely on Firefox)
 - Python (for backend services)
   - selenium
   - Firefox Drivers: "sudo apt install firefox-esr wget"
@@ -32,7 +32,7 @@ cd CCK-Dashboard
 
 ## Usage
 
-Get your own free API key from Alpha Vantage instead of using the one found in "script.js". (https://www.alphavantage.co/)
+Get your own free API key from Alpha Vantage. (https://www.alphavantage.co/)
 
 ## Contact
 
