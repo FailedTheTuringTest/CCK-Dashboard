@@ -7,11 +7,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     async function loadConfig() {
         try {
             const response = await fetch('/api/config');
-            if (!response.ok) throw new Error('Could not load config');
+            if (!response.ok) {
+                console.error('Config endpoint returned:', response.status);
+                throw new Error('Could not load config');
+            }
             const config = await response.json();
             ALPHA_VANTAGE_API_KEY = config.apiKey;
+            console.log('API Key loaded successfully');
         } catch (error) {
-            console.warn('Could not load config from server:', error);
+            console.error('Could not load config from server:', error);
         }
     }
 
@@ -123,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         if (ALPHA_VANTAGE_API_KEY === '(api_key)' || !ALPHA_VANTAGE_API_KEY) {
-            stockInfo.innerHTML = `<p class="error-message">IMPORTANT: Add your Alpha Vantage API key in the script to see stocks.</p>`;
+            stockInfo.innerHTML = `<p class="error-message">API Key not available. Check that the server is running and /api/config endpoint is accessible.</p>`;
             stockInfo.classList.add('error');
             stockInfo.classList.remove('loading');
             return;
