@@ -1,0 +1,20 @@
+API Key loaded: KPWHMKBFE1...
+Traceback (most recent call last):
+  File "/workspaces/CCK-Dashboard/kiosk.py", line 61, in <module>
+    driver = webdriver.Firefox(options=firefox_options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/selenium/webdriver/firefox/webdriver.py", line 69, in __init__
+    super().__init__(command_executor=executor, options=self.options)
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/selenium/webdriver/common/webdriver.py", line 25, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 257, in __init__
+    self.start_session(capabilities)
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 352, in start_session
+    response = self.execute(Command.NEW_SESSION, caps)["value"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 432, in execute
+    self.error_handler.check_response(response)
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/selenium/webdriver/remote/errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: Process unexpectedly closed with status 255
+
