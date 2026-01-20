@@ -3,14 +3,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     let ALPHA_VANTAGE_API_KEY = '';
     const stockSymbols = ['AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'TSLA', 'JPM', 'V', 'WMT'];
 
-    // Load API key from backend
+    // Load API key from server
     async function loadConfig() {
         try {
             const response = await fetch('/api/config');
+            if (!response.ok) throw new Error('Could not load config');
             const config = await response.json();
             ALPHA_VANTAGE_API_KEY = config.apiKey;
         } catch (error) {
-            console.warn('Could not load config from backend:', error);
+            console.warn('Could not load config from server:', error);
         }
     }
 
