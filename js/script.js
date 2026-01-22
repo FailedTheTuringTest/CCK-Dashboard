@@ -1,21 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function () {
     // --- CONFIGURATION ---
-    let ALPHA_VANTAGE_API_KEY = '';
+    const ALPHA_VANTAGE_API_KEY = 'KPWHMKBFE1SMAA35';
     const stockSymbols = ['AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'TSLA', 'JPM', 'V', 'WMT'];
-
-    // Load API key from localStorage or prompt
-    function loadConfig() {
-        ALPHA_VANTAGE_API_KEY = localStorage.getItem('API_KEY');
-        if (!ALPHA_VANTAGE_API_KEY) {
-            ALPHA_VANTAGE_API_KEY = prompt('Please enter your Alpha Vantage API key:');
-            if (ALPHA_VANTAGE_API_KEY) {
-                localStorage.setItem('ALPHA_VANTAGE_API_KEY', ALPHA_VANTAGE_API_KEY);
-            }
-        }
-        console.log('API Key loaded successfully');
-    }
-
-    loadConfig();
 
     // --- 1. CLOCK AND DATE ---
     function updateTime() {
@@ -118,13 +104,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (!isWithinAllowedHours()) {
             stockInfo.innerHTML = `<p class="info-message">Stock data is only updated between 8:55 AM and 4:05 PM.</p>`;
-            stockInfo.classList.remove('loading');
-            return;
-        }
-
-        if (ALPHA_VANTAGE_API_KEY === '(api_key)' || !ALPHA_VANTAGE_API_KEY) {
-            stockInfo.innerHTML = `<p class="error-message">API Key not available. Please enter your API key.</p>`;
-            stockInfo.classList.add('error');
             stockInfo.classList.remove('loading');
             return;
         }
