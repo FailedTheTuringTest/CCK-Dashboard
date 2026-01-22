@@ -32,7 +32,7 @@ cd CCK-Dashboard
 
 ## Usage
 
-Get your own free API key from Alpha Vantage. (https://www.alphavantage.co/)
+Get your own free API key from Alpha Vantage if you plan to adapt this code. (https://www.alphavantage.co/)
 
 ## Contact
 
