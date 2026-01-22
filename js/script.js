@@ -3,23 +3,19 @@ document.addEventListener('DOMContentLoaded', async function () {
     let ALPHA_VANTAGE_API_KEY = '';
     const stockSymbols = ['AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'TSLA', 'JPM', 'V', 'WMT'];
 
-    // Load API key from server
-    async function loadConfig() {
-        try {
-            const response = await fetch('/api/config');
-            if (!response.ok) {
-                console.error('Config endpoint returned:', response.status);
-                throw new Error('Could not load config');
+    // Load API key from localStorage or prompt
+    function loadConfig() {
+        ALPHA_VANTAGE_API_KEY = localStorage.getItem('ALPHA_VANTAGE_API_KEY');
+        if (!ALPHA_VANTAGE_API_KEY) {
+            ALPHA_VANTAGE_API_KEY = prompt('Please enter your Alpha Vantage API key:');
+            if (ALPHA_VANTAGE_API_KEY) {
+                localStorage.setItem('ALPHA_VANTAGE_API_KEY', ALPHA_VANTAGE_API_KEY);
             }
-            const config = await response.json();
-            ALPHA_VANTAGE_API_KEY = config.apiKey;
-            console.log('API Key loaded successfully');
-        } catch (error) {
-            console.error('Could not load config from server:', error);
         }
+        console.log('API Key loaded successfully');
     }
 
-    await loadConfig();
+    loadConfig();
 
     // --- 1. CLOCK AND DATE ---
     function updateTime() {
@@ -127,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         if (ALPHA_VANTAGE_API_KEY === '(api_key)' || !ALPHA_VANTAGE_API_KEY) {
-            stockInfo.innerHTML = `<p class="error-message">API Key not available. Check that the server is running and /api/config endpoint is accessible.</p>`;
+            stockInfo.innerHTML = `<p class="error-message">API Key not available. Please enter your API key.</p>`;
             stockInfo.classList.add('error');
             stockInfo.classList.remove('loading');
             return;
