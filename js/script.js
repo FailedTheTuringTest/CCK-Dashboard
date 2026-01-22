@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Load API key from localStorage or prompt
     function loadConfig() {
-        ALPHA_VANTAGE_API_KEY = localStorage.getItem('ALPHA_VANTAGE_API_KEY');
+        ALPHA_VANTAGE_API_KEY = localStorage.getItem('API_KEY');
         if (!ALPHA_VANTAGE_API_KEY) {
             ALPHA_VANTAGE_API_KEY = prompt('Please enter your Alpha Vantage API key:');
             if (ALPHA_VANTAGE_API_KEY) {
