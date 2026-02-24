@@ -32,7 +32,7 @@ cd CCK-Dashboard
 
 ## Usage
 
-kiosk.py is not essential to run the site, it only acts to put the dashboard on fullscreen for displays.
+kiosk.py is not essential to run the site, it only acts to put the dashboard on fullscreen for displays. Works for Windows and the default Raspberry Pi OS.
 
 Get your own free API key from Alpha Vantage if you plan to adapt this code. (https://www.alphavantage.co/)
 
