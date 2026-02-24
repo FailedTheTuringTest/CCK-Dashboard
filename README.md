@@ -14,7 +14,7 @@ CCK-Dashboard is a web-based newsboard and clock that provides a real-time infor
 - Responsive design for various screen sizes
 
 ### Prerequisites
-- Web browser (Chrome may require different drivers. Tested purely on Firefox)
+- Web browser (Chrome may require different drivers. Tested purely on Firefox and Microsoft Edge)
 - Python (for backend services)
   - selenium
   - Firefox Drivers: "sudo apt install firefox-esr wget"
