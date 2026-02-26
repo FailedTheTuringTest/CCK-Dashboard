@@ -76,6 +76,7 @@ body {
 #time {
     font-size: 5rem;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 #date {

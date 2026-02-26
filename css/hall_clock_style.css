@@ -52,6 +52,7 @@ body {
     font-size: 8rem;
     font-weight: 700;
     margin-bottom: 20px;
+    white-space: nowrap;
 }
 
 #date {
