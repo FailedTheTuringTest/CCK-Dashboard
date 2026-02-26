@@ -1,4 +1,4 @@
-# CCK-Dashboard
+# cck-dashboard
 
 A website dashboard application designed to display time, weather, and other essential information for Columba College Killucan.
 
