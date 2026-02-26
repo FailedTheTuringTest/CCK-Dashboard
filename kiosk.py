@@ -11,7 +11,7 @@ firefox_options = Options()
 firefox_options.add_argument("--kiosk")  # Start in fullscreen
 
 # Point to the local HTML file
-website_url = f"file://{script_dir}/index.html"
+website_url = f"file://{script_dir}/templates/index.html"
 
 # Initialize the WebDriver for Firefox
 driver = webdriver.Firefox(options=firefox_options)
